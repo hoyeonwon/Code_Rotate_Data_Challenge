@@ -14,6 +14,7 @@ clean_df = clean_df[-clean_df.duplicated()]
 
 # 2. Calculate Cargo Capacity
 
+# Since we are curious about cargo capacity per flight, grouping by unique aircraft + date is used 
 summary_df = clean_df.groupby(['code_icao', 'date']).agg({
     'FlightCount': 'sum',
     'payload': 'sum',
