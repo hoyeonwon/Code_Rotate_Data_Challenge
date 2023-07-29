@@ -1,8 +1,5 @@
 # Q1. Loading the Data
 
-import pandas as pd
-import os
-
 # 1.1 Create data frame for the main data
 ## Create an empty list of dataframes
 dataframes = []
@@ -30,7 +27,6 @@ combined_df = pd.concat(dataframes, ignore_index = True)
 subset_df = combined_df[['destination_icao', 'origin_icao', 'equipment', 'date']]
 
 #%% 1.2 Load aircraft details json file
-import json
 
 data_folder_json = "./rotate_data_case/data/airplane_details.json"
 airdetails = []
