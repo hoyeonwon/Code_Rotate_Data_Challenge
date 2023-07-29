@@ -1,0 +1,26 @@
+# 1. Count flights that traveled between different airports
+
+# Group the data by 'destination_icao', 'origin_icao', and 'code_icao', and count the flights for each group
+clean_df['FlightCount'] = clean_df.groupby(['destination_icao', 
+                                            'origin_icao', 
+                                            'code_icao'])['destination_icao'].transform('count')
+
+
+# Filter out rows:
+## where 'origin_icao' and 'destination_icao' are the same ((same airports)
+clean_df = clean_df[clean_df['origin_icao'] != clean_df['destination_icao']]
+## duplicates (leaving with only unique combination)
+clean_df = clean_df[-clean_df.duplicated()]
+
+# 2. Calculate Cargo Capacity
+
+summary_df = clean_df.groupby(['code_icao', 'date']).agg({
+    'FlightCount': 'sum',
+    'payload': 'sum',
+    'volume': 'sum'}).reset_index()
+
+# Calculate capacity per flights by dividing by the number of total flights per day & per aircraft type
+summary_df['total_cargo_capacity_weight'] = summary_df['payload'] / summary_df['FlightCount']
+summary_df['total_cargo_capacity_volume'] = summary_df['volume'] / summary_df['FlightCount']
+
+print(summary_df)
